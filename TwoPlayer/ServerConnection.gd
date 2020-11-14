@@ -1,6 +1,7 @@
 extends Node
 
 signal presences_changed
+signal state_updated
 
 const KEY = "battle_pong_581"
 
@@ -36,6 +37,7 @@ func connect_server_async():
 	if not result.is_exception():
 		_socket.connect("closed", self, "on_NakamaSocket_closed")
 		_socket.connect("received_match_presence", self, "_on_NakamaSocket_received_match_presence")
+		_socket.connect("received_match_state", self, "_on_NakamaSocket_received_match_state")
 		return OK
 	return ERR_CANT_CONNECT
 
@@ -100,6 +102,15 @@ func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPr
 		presences[join.user_id] = join
 
 	emit_signal("presences_changed")
+	
+func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
+	var code := match_state.op_code
+	var raw := match_state.data
+	var decoded = JSON.parse(raw).result
+	
+	print(decoded["playerReady"])
+	
+	emit_signal("state_updated")
 
 func on_NakamaSocket_closed():
 	_socket = null
