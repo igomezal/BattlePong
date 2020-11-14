@@ -8,7 +8,7 @@ var _client : NakamaClient
 var _session : NakamaSession
 var _socket : NakamaSocket
 var _match_id : String
-var _presences = {}
+var presences = {}
 
 var deviceid : String
 var room_code : String
@@ -50,7 +50,7 @@ func create_match_async():
 			return {}
 
 		for presence in match_join_result.presences:
-			_presences[presence.user_id] = presence
+			presences[presence.user_id] = presence
 			
 		room_code = match_join_result.label
 		return room_code
@@ -72,7 +72,7 @@ func connect_match_async(label: String):
 			return ""
 
 		for presence in match_join_result.presences:
-			_presences[presence.user_id] = presence
+			presences[presence.user_id] = presence
 			
 		room_code = match_join_result.label
 		return room_code
@@ -85,13 +85,13 @@ func get_match_list():
 func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPresenceEvent) -> void:
 	for leave in new_presences.leaves:
 		#warning-ignore: return_value_discarded
-		_presences.erase(leave.user_id)
+		presences.erase(leave.user_id)
 
 	for join in new_presences.joins:
-		_presences[join.user_id] = join
+		presences[join.user_id] = join
 			
 	print("PRESENCIAS")
-	print(_presences)
+	print(presences)
 
 	emit_signal("presences_changed")
 
