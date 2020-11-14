@@ -33,7 +33,6 @@ border_blend = true
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=7]
-size = 26
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=8]
@@ -129,6 +128,8 @@ margin_top = 106.245
 margin_right = 348.007
 margin_bottom = 137.245
 custom_fonts/font = SubResource( 7 )
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
