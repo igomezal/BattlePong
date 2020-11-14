@@ -53,6 +53,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -103,13 +104,38 @@ position = Vector2( 59.8882, 63.1748 )
 scale = Vector2( 0.197785, 0.197785 )
 texture = ExtResource( 3 )
 
+[node name="Player1Ready" type="CheckBox" parent="CanvasLayer/MatchPanel/PlayersPanel"]
+visible = false
+margin_left = 75.7662
+margin_top = 20.7656
+margin_right = 99.7662
+margin_bottom = 44.7656
+focus_mode = 0
+disabled = true
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Player2" type="Sprite" parent="CanvasLayer/MatchPanel/PlayersPanel"]
 visible = false
 position = Vector2( 309.34, 62.4257 )
 scale = Vector2( 0.197785, 0.197785 )
 texture = ExtResource( 3 )
 
+[node name="Player2Ready" type="CheckBox" parent="CanvasLayer/MatchPanel/PlayersPanel"]
+visible = false
+margin_left = 326.075
+margin_top = 20.7656
+margin_right = 350.075
+margin_bottom = 44.7656
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Player1Name" type="Label" parent="CanvasLayer/MatchPanel/PlayersPanel"]
+visible = false
 margin_left = 19.4178
 margin_top = 103.947
 margin_right = 101.418
@@ -123,6 +149,7 @@ __meta__ = {
 }
 
 [node name="Player2Name" type="Label" parent="CanvasLayer/MatchPanel/PlayersPanel"]
+visible = false
 margin_left = 266.007
 margin_top = 106.245
 margin_right = 348.007
@@ -171,4 +198,5 @@ text = "LEAVE"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="pressed" from="CanvasLayer/MatchPanel/Ready" to="." method="_on_Ready_pressed"]
 [connection signal="pressed" from="CanvasLayer/MatchPanel/Leave" to="." method="_on_Leave_pressed"]

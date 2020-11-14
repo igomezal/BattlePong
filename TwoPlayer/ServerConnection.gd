@@ -1,9 +1,20 @@
 extends Node
 
 signal presences_changed
-signal state_updated
+signal state_updated(player_status)
 
 const KEY = "battle_pong_581"
+
+enum player_status {
+	NOT_READY = 0
+	READY,
+	PLAYING
+}
+
+enum OpCodes {
+	UPDATE_STATE = 1,
+	UPDATE_POSITION
+}
 
 var _client : NakamaClient
 var _session : NakamaSession
@@ -95,6 +106,12 @@ func leave_match():
 
 func get_match_list():
 	return yield(_client.rpc_async(_session, "get_match_list", ""), "completed")
+	
+# Sends a message to the server stating a change in position for the client.
+func send_status_update(new_state):
+	if _socket:
+		var payload := {id = _session.user_id, state = new_state}
+		_socket.send_match_state_async(_match_id, OpCodes.UPDATE_STATE, JSON.print(payload))
 
 func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPresenceEvent) -> void:
 	for leave in new_presences.leaves:
@@ -109,11 +126,13 @@ func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPr
 func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
 	var code := match_state.op_code
 	var raw := match_state.data
-	var decoded = JSON.parse(raw).result
 	
-	print(decoded["playerReady"])
-	
-	emit_signal("state_updated")
+	match code:
+		OpCodes.UPDATE_STATE:
+			var decoded: Dictionary = JSON.parse(raw).result
+			var player_status: Dictionary = decoded.player_status
+			
+			emit_signal("state_updated", player_status)
 
 func on_NakamaSocket_closed():
 	_socket = null
