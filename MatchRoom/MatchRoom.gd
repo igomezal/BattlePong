@@ -43,12 +43,11 @@ func _on_MatchRoom_state_updated(player_status):
 		ui.playerText.text = ""
 	var presences = ServerConnection.presences
 	var index = 0
-	print(player_status)
 	for presence in presences:
 		playerUI[index].playerIcon.visible = true
 		playerUI[index].playerText.visible = true
 		playerUI[index].playerReady.visible = true
-		playerUI[index].playerReady.pressed = player_status[presence] == ServerConnection.player_status.PLAYING
+		playerUI[index].playerReady.pressed = player_status[presence] == ServerConnection.player_status.READY
 		playerUI[index].playerText.text = presences[presence].username
 		index += 1
 
@@ -59,13 +58,12 @@ func _on_Leave_pressed():
 
 func _on_Ready_pressed():
 	if ServerConnection.presences.size() == 2:
-		var new_state
 		if ready_state == ServerConnection.player_status.NOT_READY:
-			new_state = ServerConnection.player_status.READY
+			ready_state = ServerConnection.player_status.READY
 			$CanvasLayer/MatchPanel/Ready.text = "NOT READY"
 		else:
-			new_state = ServerConnection.player_status.NOT_READY
+			ready_state = ServerConnection.player_status.NOT_READY
 			$CanvasLayer/MatchPanel/Ready.text = "READY"
-			
-		yield(ServerConnection.send_status_update(new_state), "completed")
+		
+		ServerConnection.send_status_update(ready_state)
 	
