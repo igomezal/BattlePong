@@ -14,6 +14,8 @@ var presences = {}
 var deviceid : String
 var room_code : String
 
+var renew_token_timer
+
 func _ready():
 	get_tree().set_auto_accept_quit(false)
 
@@ -92,7 +94,7 @@ func leave_match():
 
 func get_match_list():
 	return yield(_client.rpc_async(_session, "get_match_list", ""), "completed")
-	
+
 func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPresenceEvent) -> void:
 	for leave in new_presences.leaves:
 		#warning-ignore: return_value_discarded
@@ -120,3 +122,12 @@ func _notification(what):
 		yield(leave_match(), "completed")
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		get_tree().quit()
+
+
+func _on_RenewTokenTimer_timeout():
+	print("NEW SESSION?")	
+	if(_session != null):
+		yield(create_session(), "completed")
+		print("YES!!!! NEW SESSION")
+	else:
+		print("NOOOOOOOO")

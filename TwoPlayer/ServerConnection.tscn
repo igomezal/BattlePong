@@ -4,3 +4,8 @@
 
 [node name="ServerConnection" type="Node"]
 script = ExtResource( 1 )
+
+[node name="RenewTokenTimer" type="Timer" parent="."]
+wait_time = 2700.0
+autostart = true
+[connection signal="timeout" from="RenewTokenTimer" to="." method="_on_RenewTokenTimer_timeout"]
