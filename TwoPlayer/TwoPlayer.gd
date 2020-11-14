@@ -11,11 +11,14 @@ func _ready():
 
 func _on_CreateNewMatchButton_pressed():
 	room_code = yield(ServerConnection.create_match_async(), "completed")
-	if !room_code.empty():
+	if !room_code.empty() && !room_code.match("Error*"):
 		get_tree().change_scene("res://MatchRoom/MatchRoom.tscn")
 
 func _on_JoinButton_pressed():
 	var labelFromEditText = $CanvasLayer/JoinMatch/RoomCodeEdit.text
 	room_code = yield(ServerConnection.connect_match_async(labelFromEditText), "completed")
-	if !room_code.empty():
+
+	if !room_code.empty() && !room_code.match("Error*"):
 		get_tree().change_scene("res://MatchRoom/MatchRoom.tscn")
+	else:
+		$CanvasLayer/JoinMatch/ErrorJoining.text = room_code

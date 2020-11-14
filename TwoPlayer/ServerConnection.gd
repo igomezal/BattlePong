@@ -73,9 +73,10 @@ func connect_match_async(label: String):
 		var match_join_result: NakamaRTAPI.Match = yield(_socket.join_match_async(_match_id), "completed")
 
 		if match_join_result.is_exception():
+			_match_id = ""
 			var exception: NakamaException = match_join_result.get_exception()
 			printerr("Error joining the match: %s - %s" % [exception.status_code, exception.message])
-			return ""
+			return "Error - " + exception.message
 
 		for presence in match_join_result.presences:
 			presences[presence.user_id] = presence
