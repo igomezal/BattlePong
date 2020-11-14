@@ -53,7 +53,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
-"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -115,6 +114,7 @@ margin_left = 19.4178
 margin_top = 103.947
 margin_right = 101.418
 margin_bottom = 134.947
+rect_scale = Vector2( 1.00249, 1 )
 custom_fonts/font = SubResource( 6 )
 align = 1
 valign = 1
@@ -156,3 +156,19 @@ text = "READY"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Leave" type="Button" parent="CanvasLayer/MatchPanel"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1252.55
+margin_top = -103.1
+margin_right = -994.553
+margin_bottom = -29.1005
+custom_fonts/font = SubResource( 9 )
+text = "LEAVE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="CanvasLayer/MatchPanel/Leave" to="." method="_on_Leave_pressed"]

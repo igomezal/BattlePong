@@ -22,3 +22,6 @@ func _on_MatchRoom_presences_changed():
 		playerUI[index].playerText.text = presences[presence].username
 		index += 1
 
+func _on_Leave_pressed():
+	yield(ServerConnection.leave_match(), "completed")
+	get_tree().change_scene("res://TwoPlayer/TwoPlayer.tscn")

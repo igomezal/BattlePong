@@ -13,6 +13,9 @@ var presences = {}
 var deviceid : String
 var room_code : String
 
+func _ready():
+	get_tree().set_auto_accept_quit(false)
+
 func create_client():
 	var scheme = "http"
 	var host = "battle-pong.hopto.org"
@@ -63,7 +66,6 @@ func connect_match_async(label: String):
 		var match_found: NakamaAPI.ApiRpc = yield(_client.rpc_async(_session, "get_match_by_label", JSON.print(payload)), "completed")
 		if not match_found.is_exception():
 			_match_id = match_found.payload
-
 		var match_join_result: NakamaRTAPI.Match = yield(_socket.join_match_async(_match_id), "completed")
 
 		if match_join_result.is_exception():
@@ -78,6 +80,11 @@ func connect_match_async(label: String):
 		return room_code
 	else:
 		printerr("Already in a match")
+
+func leave_match():
+	yield(_socket.leave_match_async(_match_id), "completed")
+	_match_id = ""
+	presences = {}
 
 func get_match_list():
 	return yield(_client.rpc_async(_session, "get_match_list", ""), "completed")
@@ -97,3 +104,9 @@ func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPr
 
 func on_NakamaSocket_closed():
 	_socket = null
+	
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST && !_match_id.empty():
+		yield(leave_match(), "completed")
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		get_tree().quit()
