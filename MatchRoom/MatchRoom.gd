@@ -65,5 +65,5 @@ func _on_Ready_pressed():
 			new_state = ServerConnection.player_status.NOT_READY
 			$CanvasLayer/MatchPanel/Ready.text = "READY"
 			
-		yield(ServerConnection.send_position_update(new_state), "completed")
+		yield(ServerConnection.send_status_update(new_state), "completed")
 	
