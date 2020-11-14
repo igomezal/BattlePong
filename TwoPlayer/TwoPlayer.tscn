@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://TwoPlayer/TwoPlayer.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprite__.ttf" type="DynamicFontData" id=2]
@@ -25,6 +25,13 @@ font_data = ExtResource( 2 )
 size = 66
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 0.466667 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 66
+font_data = ExtResource( 2 )
+
 [node name="TwoPlayer" type="Node"]
 script = ExtResource( 1 )
 
@@ -37,7 +44,6 @@ margin_right = -640.0
 margin_bottom = 6.10352e-05
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
-"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -95,5 +101,25 @@ margin_right = 616.0
 margin_bottom = 404.0
 custom_fonts/font = SubResource( 6 )
 text = "Join"
+
+[node name="BlockingPanel" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConnectingText" type="Label" parent="CanvasLayer/BlockingPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -179.0
+margin_top = -39.0
+margin_right = 179.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 8 )
+text = "CONNECTING..."
 [connection signal="pressed" from="CanvasLayer/CreateMatch/CreateNewMatchButton" to="." method="_on_CreateNewMatchButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/JoinMatch/JoinButton" to="." method="_on_JoinButton_pressed"]

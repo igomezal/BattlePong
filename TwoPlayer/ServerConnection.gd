@@ -85,6 +85,8 @@ func leave_match():
 	yield(_socket.leave_match_async(_match_id), "completed")
 	_match_id = ""
 	presences = {}
+	
+	emit_signal("presences_changed")
 
 func get_match_list():
 	return yield(_client.rpc_async(_session, "get_match_list", ""), "completed")
@@ -96,9 +98,6 @@ func _on_NakamaSocket_received_match_presence(new_presences: NakamaRTAPI.MatchPr
 
 	for join in new_presences.joins:
 		presences[join.user_id] = join
-			
-	print("PRESENCIAS")
-	print(presences)
 
 	emit_signal("presences_changed")
 
