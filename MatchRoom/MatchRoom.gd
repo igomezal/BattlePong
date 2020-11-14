@@ -25,6 +25,8 @@ func _ready():
 func _on_MatchRoom_presences_changed():
 	for ui in playerUI:
 		ui.playerIcon.visible = false
+		ui.playerText.visible = false
+		ui.playerReady.visible = false
 		ui.playerText.text = ""
 	var presences = ServerConnection.presences
 	var index = 0
