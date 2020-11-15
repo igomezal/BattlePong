@@ -1,0 +1,6 @@
+session:
+  token_expiry_sec: 3600
+runtime:
+  path: "/home/battle-pong/nakama/data/modules"
+socket:
+    server_key: "battle_pong_581"
