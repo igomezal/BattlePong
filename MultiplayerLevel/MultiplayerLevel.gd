@@ -20,7 +20,12 @@ func _process(delta):
 func _compute_starting_position():
 	player_opponent = ServerConnection.compute_initial_player_opponent_positions()
 	$MultiplayerPlayer.position.x = startingX[player_opponent.player.pos]
+	$MultiplayerPlayer.visible = true
+	
+	$MultiplayerOpponent.next_position = Vector2(startingX[player_opponent.opponent.pos], 360)
 	$MultiplayerOpponent.position.x = startingX[player_opponent.opponent.pos]
+	$MultiplayerOpponent.visible = true
+	
 	ServerConnection.send_position_update($MultiplayerPlayer.position)
 	
 func _on_PlayerGoal_body_entered(body):
@@ -46,5 +51,5 @@ func _on_Opponent_position_updated(positions):
 	var update := true
 	var next_position: Dictionary = positions[player_opponent.opponent.id]
 	$MultiplayerOpponent.next_position = Vector2(startingX[player_opponent.opponent.pos], next_position.y)
-	$MultiplayerOpponent.update_state()
+	# $MultiplayerOpponent.update_state()
 

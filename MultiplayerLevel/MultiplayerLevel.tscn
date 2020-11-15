@@ -101,9 +101,11 @@ position = Vector2( 640, -10 )
 shape = SubResource( 4 )
 
 [node name="MultiplayerPlayer" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( 25, 360 )
 
 [node name="MultiplayerOpponent" parent="." instance=ExtResource( 2 )]
+visible = false
 position = Vector2( 1255, 360 )
 
 [node name="PlayerGoal" type="Area2D" parent="."]
