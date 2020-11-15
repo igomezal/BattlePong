@@ -18,6 +18,7 @@ var ready_state = ServerConnection.player_status.NOT_READY
 func _ready():
 	ServerConnection.connect("presences_changed", self, "_on_MatchRoom_presences_changed")
 	ServerConnection.connect("state_updated", self, "_on_MatchRoom_state_updated")
+	ServerConnection.connect("start_match", self, "_on_MatchRoom_start_match")
 	$CanvasLayer/MatchPanel/RoomCodeText.text = ServerConnection.room_code
 	_on_MatchRoom_presences_changed()
 
@@ -49,12 +50,14 @@ func _on_MatchRoom_state_updated(player_status):
 		
 	var presences = ServerConnection.presences
 	var index = 0
+	var all_ready = true
 	for presence in presences:
 		playerUI[index].playerIcon.visible = true
 		playerUI[index].playerText.visible = true
 		playerUI[index].playerReady.visible = true
 		playerUI[index].playerReady.pressed = player_status[presence] == ServerConnection.player_status.READY
 		playerUI[index].playerText.text = presences[presence].username
+		
 		index += 1
 		
 	ready_state = player_status[ServerConnection._session.user_id]
@@ -78,4 +81,6 @@ func _on_Ready_pressed():
 			$CanvasLayer/MatchPanel/Ready.text = "READY"
 		
 		ServerConnection.send_status_update(ready_state)
-	
+
+func _on_MatchRoom_start_match():
+	get_tree().change_scene("res://MultiplayerLevel/MultiplayerLevel.tscn")
