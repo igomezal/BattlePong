@@ -3,6 +3,7 @@ extends Node
 signal presences_changed
 signal state_updated(player_status)
 signal start_match
+signal update_positions(positions)
 
 const KEY = "battle_pong_581"
 const _scheme = "http"
@@ -86,11 +87,30 @@ func leave_match():
 func get_match_list():
 	return yield(_client.rpc_async(_session, "get_match_list", ""), "completed")
 	
-# Sends a message to the server stating a change in position for the client.
+
 func send_status_update(new_state):
 	if _socket:
 		var payload := {id = _session.user_id, state = new_state}
 		_socket.send_match_state_async(_match_id, OpCodes.UPDATE_STATE, JSON.print(payload))
+
+# Sends a message to the server stating a change in position for the client.
+func send_position_update(position: Vector2):
+	if _socket:
+		var payload := {id = _session.user_id, pos = {x = position.x, y = position.y}}
+		_socket.send_match_state_async(_match_id, OpCodes.UPDATE_POSITION, JSON.print(payload))
+		
+func compute_initial_player_opponent_positions():
+	var index = 0
+	var player_opponent = { player = { pos = 0, id = 0 }, opponent = { pos = 0, id = 0 }}
+	for presence in presences:
+		if presence ==_session.user_id:
+			player_opponent.player.pos = index
+			player_opponent.player.id = _session.user_id
+		else:
+			player_opponent.opponent.pos = index
+			player_opponent.opponent.id = presence
+		index += 1
+	return player_opponent
 		
 func _join_match():
 	var match_join_result: NakamaRTAPI.Match = yield(_socket.join_match_async(_match_id), "completed")
@@ -132,6 +152,11 @@ func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
 			emit_signal("state_updated", player_status)
 		OpCodes.START_MATCH:
 			emit_signal("start_match")
+		OpCodes.UPDATE_POSITION:
+			var decoded: Dictionary = JSON.parse(raw).result
+			var positions: Dictionary = decoded.pos
+			
+			emit_signal("update_positions", positions)
 
 func on_NakamaSocket_closed():
 	_socket = null

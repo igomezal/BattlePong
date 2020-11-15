@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Opponent/Opponent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player/MultiplayerPlayer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Opponent/MultiplayerOpponent.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Ball/Ball.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Level/Level.gd" type="Script" id=4]
+[ext_resource path="res://MultiplayerLevel/MultiplayerLevel.gd" type="Script" id=4]
 [ext_resource path="res://assets/sprite__.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://assets/score.wav" type="AudioStream" id=6]
 
@@ -25,7 +25,7 @@ extents = Vector2( 640, 10 )
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 10, 360 )
 
-[node name="Level" type="Node"]
+[node name="MultiplayerLevel" type="Node"]
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 720.0, 360.0 ]
@@ -87,9 +87,6 @@ __meta__ = {
 wait_time = 3.0
 one_shot = true
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 25, 360 )
-
 [node name="WallTop" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
@@ -103,7 +100,10 @@ position = Vector2( 0, 740 )
 position = Vector2( 640, -10 )
 shape = SubResource( 4 )
 
-[node name="Opponent" parent="." instance=ExtResource( 2 )]
+[node name="MultiplayerPlayer" parent="." instance=ExtResource( 1 )]
+position = Vector2( 25, 360 )
+
+[node name="MultiplayerOpponent" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1255, 360 )
 
 [node name="PlayerGoal" type="Area2D" parent="."]
