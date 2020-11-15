@@ -132,6 +132,8 @@ func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
 			var decoded: Dictionary = JSON.parse(raw).result
 			var player_status: Dictionary = decoded.player_status
 			
+			print(player_status)
+			
 			emit_signal("state_updated", player_status)
 
 func on_NakamaSocket_closed():

@@ -41,6 +41,7 @@ func _on_MatchRoom_state_updated(player_status):
 	for ui in playerUI:
 		ui.playerIcon.visible = false
 		ui.playerText.text = ""
+		
 	var presences = ServerConnection.presences
 	var index = 0
 	for presence in presences:
@@ -50,6 +51,12 @@ func _on_MatchRoom_state_updated(player_status):
 		playerUI[index].playerReady.pressed = player_status[presence] == ServerConnection.player_status.READY
 		playerUI[index].playerText.text = presences[presence].username
 		index += 1
+		
+	ready_state = player_status[ServerConnection._session.user_id]
+	if ready_state == ServerConnection.player_status.NOT_READY:
+		$CanvasLayer/MatchPanel/Ready.text = "READY"
+	else:
+		$CanvasLayer/MatchPanel/Ready.text = "NOT READY"
 
 func _on_Leave_pressed():
 	yield(ServerConnection.leave_match(), "completed")
