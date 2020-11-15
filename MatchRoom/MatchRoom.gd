@@ -28,6 +28,8 @@ func _on_MatchRoom_presences_changed():
 		ui.playerText.visible = false
 		ui.playerReady.visible = false
 		ui.playerText.text = ""
+		ui.playerReady.pressed = false
+		
 	var presences = ServerConnection.presences
 	var index = 0
 	for presence in presences:
@@ -40,7 +42,10 @@ func _on_MatchRoom_presences_changed():
 func _on_MatchRoom_state_updated(player_status):
 	for ui in playerUI:
 		ui.playerIcon.visible = false
+		ui.playerText.visible = false
+		ui.playerReady.visible = false
 		ui.playerText.text = ""
+		ui.playerReady.pressed = false
 		
 	var presences = ServerConnection.presences
 	var index = 0
