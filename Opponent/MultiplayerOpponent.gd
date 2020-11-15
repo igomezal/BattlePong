@@ -1,6 +1,5 @@
 extends KinematicBody2D
 
-var last_position := Vector2.ZERO
 var next_position := Vector2.ZERO
 
 onready var tween = $Tween
