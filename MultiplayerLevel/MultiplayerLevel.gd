@@ -20,7 +20,7 @@ func _process(delta):
 func _compute_starting_position():
 	player_opponent = ServerConnection.compute_initial_player_opponent_positions()
 	$MultiplayerPlayer.position.x = startingX[player_opponent.player.pos]
-	$Opponent.position.x = startingX[player_opponent.opponent.pos]
+	$MultiplayerOpponent.position.x = startingX[player_opponent.opponent.pos]
 	ServerConnection.send_position_update($MultiplayerPlayer.position)
 	
 func _on_PlayerGoal_body_entered(body):
