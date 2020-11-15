@@ -45,6 +45,6 @@ func _on_CountdownTimer_timeout():
 func _on_Opponent_position_updated(positions):
 	var update := true
 	var next_position: Dictionary = positions[player_opponent.opponent.id]
-	$Opponent.next_position = Vector2(next_position.x, next_position.y)
-	$Opponent.update_state()
+	$MultiplayerOpponent.next_position = Vector2(next_position.x, next_position.y)
+	$MultiplayerOpponent.update_state()
 
