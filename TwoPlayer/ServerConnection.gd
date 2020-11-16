@@ -165,8 +165,7 @@ func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
 			
 			emit_signal("update_positions", positions)
 		OpCodes.LAUNCH_BALL:
-			var decoded: Dictionary = JSON.parse(raw).result
-			var velocity: Dictionary = decoded.pos
+			var velocity: Dictionary = JSON.parse(raw).result
 			
 			emit_signal("launch_ball", velocity)
 
