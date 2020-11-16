@@ -32,7 +32,8 @@ local player_status = {
 local OpCodes = {
     update_state = 1,
     update_position = 2,
-    start_match = 3
+    start_match = 3,
+    launch_ball = 4
 }
 
 local commands = {}
@@ -58,15 +59,22 @@ commands[OpCodes.update_position] = function(data, state)
     end
 end
 
+commands[OpCodes.launch_ball] = function()
+end
+
 function world_control.match_init(context, params)
     local state = {
         presences = {},
         player_status = {},
         positions = {},
+        timer_to_launch_ball = 0,
+        launch_ball = false,
         max_players = 2
     }
     local tick_rate = 10
     local label = randomString(5)
+
+    math.randomseed(os.time())
 
     return state, tick_rate, label 
 end
@@ -159,8 +167,35 @@ function world_control.match_loop(_, dispatcher, _, state, messages)
                     for key, _ in pairs(state.player_status) do
                         state.player_status[key] = player_status.PLAYING
                     end
+                    state.timer_to_launch_ball = nakama.time()
+                    state.launch_ball = true
                     dispatcher.broadcast_message(OpCodes.start_match)
                 end
+            end
+        end
+
+        if op_code == OpCodes.launch_ball then
+            state.launch_ball = true
+            state.timer_to_launch_ball = nakama.time()
+        end
+
+        if state.launch_ball then
+            local current_time = nakama.time()
+            if current_time - state.timer_to_launch_ball == 3000 then
+                state.launch_ball = false
+                local x_value = {-1, 1}
+                local y_value = {-0.8, 0.8}
+
+                local data = {
+                    x = x_value[math.random(0, 10) % 2 + 1],
+                    y = y_value[math.random(0, 10) % 2 + 1]
+                }
+
+                local encoded = nakama.json_encode(data)
+
+                nakama.logger_info(string.format("x: %q y: %q", data.x, data.y))
+
+                dispatcher.broadcast_message(OpCodes.launch_ball, encoded)
             end
         end
     end
