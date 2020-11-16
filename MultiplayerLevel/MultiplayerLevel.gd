@@ -11,6 +11,7 @@ func _ready():
 	$CountdownLabel.visible = true
 	$CountdownTimer.start()
 	ServerConnection.connect("update_positions", self, "_on_Opponent_position_updated")
+	ServerConnection.connect("launch_ball", self, "_on_MultiplayerLevel_launch_ball")
 
 func _process(delta):
 	$PlayerScore.text = str(playerScore)
@@ -38,14 +39,17 @@ func _on_OpponentGoal_body_entered(body):
 	
 func scored():
 	$Ball.position = Vector2(640, 360)
-	# get_tree().call_group("BallGroup", "stop_ball")
+	get_tree().call_group("BallGroup", "stop_ball")
 	$CountdownTimer.start()
 	$CountdownLabel.visible = true
 	$ScoreSound.play()
 
 func _on_CountdownTimer_timeout():
-	# get_tree().call_group("BallGroup", "start_ball")
+	ServerConnection.send_launch_ball()
 	$CountdownLabel.visible = false
+	
+func _on_MultiplayerLevel_launch_ball(velocity):
+	get_tree().call_group("BallGroup", "start_ball_custom_velocity", velocity)
 
 func _on_Opponent_position_updated(positions):
 	var update := true

@@ -20,3 +20,8 @@ func start_ball():
 	speed = 400
 	velocity.x = [-1,1][randi() % 2]
 	velocity.y = [-0.8,0.8][randi() % 2]
+	
+func start_ball_custom_velocity(custom_velocity):
+	speed = 400
+	velocity.x = custom_velocity.x
+	velocity.y = custom_velocity.y

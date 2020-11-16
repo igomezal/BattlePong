@@ -4,6 +4,7 @@ signal presences_changed
 signal state_updated(player_status)
 signal start_match
 signal update_positions(positions)
+signal launch_ball(velocity)
 
 const KEY = "battle_pong_581"
 const _scheme = "http"
@@ -19,7 +20,8 @@ enum player_status {
 enum OpCodes {
 	UPDATE_STATE = 1,
 	UPDATE_POSITION,
-	START_MATCH
+	START_MATCH,
+	LAUNCH_BALL
 }
 
 var _client : NakamaClient
@@ -98,6 +100,11 @@ func send_position_update(position: Vector2):
 	if _socket:
 		var payload := {id = _session.user_id, pos = {x = position.x, y = position.y}}
 		_socket.send_match_state_async(_match_id, OpCodes.UPDATE_POSITION, JSON.print(payload))
+
+func send_launch_ball():
+	if _socket:
+		var payload := {}
+		_socket.send_match_state_async(_match_id, OpCodes.LAUNCH_BALL, JSON.print(payload))
 		
 func compute_initial_player_opponent_positions():
 	var index = 0
@@ -157,6 +164,11 @@ func _on_NakamaSocket_received_match_state(match_state: NakamaRTAPI.MatchData):
 			var positions: Dictionary = decoded.pos
 			
 			emit_signal("update_positions", positions)
+		OpCodes.LAUNCH_BALL:
+			var decoded: Dictionary = JSON.parse(raw).result
+			var velocity: Dictionary = decoded.pos
+			
+			emit_signal("launch_ball", velocity)
 
 func on_NakamaSocket_closed():
 	_socket = null
