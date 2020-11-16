@@ -45,7 +45,7 @@ func scored():
 	$ScoreSound.play()
 
 func _on_CountdownTimer_timeout():
-	ServerConnection.send_launch_ball()
+	# ServerConnection.send_launch_ball()
 	$CountdownLabel.visible = false
 	
 func _on_MultiplayerLevel_launch_ball(velocity):
