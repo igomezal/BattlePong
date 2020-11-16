@@ -40,12 +40,12 @@ func _on_OpponentGoal_body_entered(body):
 func scored():
 	$Ball.position = Vector2(640, 360)
 	get_tree().call_group("BallGroup", "stop_ball")
+	ServerConnection.send_launch_ball()
 	$CountdownTimer.start()
 	$CountdownLabel.visible = true
 	$ScoreSound.play()
 
 func _on_CountdownTimer_timeout():
-	# ServerConnection.send_launch_ball()
 	$CountdownLabel.visible = false
 	
 func _on_MultiplayerLevel_launch_ball(velocity):
