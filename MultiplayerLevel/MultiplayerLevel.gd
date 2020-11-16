@@ -55,3 +55,4 @@ func _on_Opponent_position_updated(positions):
 	var update := true
 	var next_position: Dictionary = positions[player_opponent.opponent.id]
 	$MultiplayerOpponent.next_position = Vector2(startingX[player_opponent.opponent.pos], next_position.y)
+	$MultiplayerOpponent.update_state()
